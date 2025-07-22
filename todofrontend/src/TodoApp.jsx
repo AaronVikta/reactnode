@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './app.css';
+// import './app.css';
 
 const API_URL = 'http://localhost:5000/todos';
 
