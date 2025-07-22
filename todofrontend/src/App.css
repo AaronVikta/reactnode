@@ -54,3 +54,8 @@ body{
   display: flex;
   justify-content: center;
 }
+.error__message {
+    color: red;
+    margin: 10px 0;
+    text-align: center;
+}

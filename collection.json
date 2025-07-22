@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "0a38dded-1234-4567-89ab-abcdef123456",
+    "name": "Todo API Full Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login Tests",
+      "item": [
+        {
+          "name": "Login - Success",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"username\": \"admin\", \"password\": \"password123\" }" },
+            "url": { "raw": "http://localhost:5000/login", "host": ["localhost"], "port": "5000", "path": ["login"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Login success', () => pm.response.to.have.status(200));"] } }]
+        },
+        {
+          "name": "Login - Missing Username",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"password\": \"password123\" }" },
+            "url": { "raw": "http://localhost:5000/login", "host": ["localhost"], "port": "5000", "path": ["login"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Login missing username', () => pm.response.to.have.status(400));"] } }]
+        },
+        {
+          "name": "Login - Missing Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"username\": \"admin\" }" },
+            "url": { "raw": "http://localhost:5000/login", "host": ["localhost"], "port": "5000", "path": ["login"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Login missing password', () => pm.response.to.have.status(400));"] } }]
+        },
+        {
+          "name": "Login - Invalid Username",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"username\": \"wrong\", \"password\": \"password123\" }" },
+            "url": { "raw": "http://localhost:5000/login", "host": ["localhost"], "port": "5000", "path": ["login"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Invalid username', () => pm.response.to.have.status(401));"] } }]
+        },
+        {
+          "name": "Login - Invalid Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"username\": \"admin\", \"password\": \"wrongpass\" }" },
+            "url": { "raw": "http://localhost:5000/login", "host": ["localhost"], "port": "5000", "path": ["login"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Invalid password', () => pm.response.to.have.status(401));"] } }]
+        }
+      ]
+    },
+    {
+      "name": "Todos Tests",
+      "item": [
+        {
+          "name": "Get All Todos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/todos", "host": ["localhost"], "port": "5000", "path": ["todos"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Get todos', () => pm.response.to.have.status(200));"] } }]
+        },
+        {
+          "name": "Create Todo - Success",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"title\": \"Test Todo\" }" },
+            "url": { "raw": "http://localhost:5000/todos", "host": ["localhost"], "port": "5000", "path": ["todos"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": ["pm.test('Todo created', () => pm.response.to.have.status(200));", "pm.collectionVariables.set('todoId', pm.response.json().todo.id);"] }
+          }]
+        },
+        {
+          "name": "Create Todo - Missing Title",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ }" },
+            "url": { "raw": "http://localhost:5000/todos", "host": ["localhost"], "port": "5000", "path": ["todos"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Missing title fails', () => pm.response.to.have.status(400));"] } }]
+        },
+        {
+          "name": "Update Todo - Success",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"title\": \"Updated Todo\", \"completed\": true }" },
+            "url": { "raw": "http://localhost:5000/todos/{{todoId}}", "host": ["localhost"], "port": "5000", "path": ["todos", "{{todoId}}"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Todo updated', () => pm.response.to.have.status(200));"] } }]
+        },
+        {
+          "name": "Update Todo - Invalid ID",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"title\": \"Update\", \"completed\": true }" },
+            "url": { "raw": "http://localhost:5000/todos/invalid-id", "host": ["localhost"], "port": "5000", "path": ["todos", "invalid-id"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Invalid ID update fails', () => pm.response.to.have.status(404));"] } }]
+        },
+        {
+          "name": "Delete Todo - Success",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:5000/todos/{{todoId}}", "host": ["localhost"], "port": "5000", "path": ["todos", "{{todoId}}"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Todo deleted', () => pm.response.to.have.status(200));"] } }]
+        },
+        {
+          "name": "Delete Todo - Invalid ID",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:5000/todos/invalid-id", "host": ["localhost"], "port": "5000", "path": ["todos", "invalid-id"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Invalid ID delete fails', () => pm.response.to.have.status(404));"] } }]
+        }
+      ]
+    }
+  ],
+  "variable": [{ "key": "todoId", "value": "" }]
+}

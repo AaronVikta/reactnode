@@ -15,7 +15,7 @@ function Login({ onLogin }) {
                 onLogin(username);
             }
         } catch (err) {
-            setError('Invalid username or password');
+            setError(err.response?.data?.message);
         }
     };
 
@@ -26,18 +26,18 @@ function Login({ onLogin }) {
                 <input
                     type="text"
                     placeholder="Username"
+                    id='username'
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    required
                 />
                 <input
                     type="password"
+                    id='password'
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                 />
-                <button type="submit">Login</button>
+                <button type="submit" id='login'>Login</button>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
             </form>
         </div>

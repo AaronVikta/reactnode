@@ -4,7 +4,7 @@
   "description": "A simple todo app to demonstrate my QA Automation skills",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cypress open",
     "start": "node server.js"
   },
   "author": "Victor Awam",
@@ -14,5 +14,8 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "cypress": "^14.5.2"
   }
 }

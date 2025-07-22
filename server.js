@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const todos = [];
+const todos = [{"id": "1", "title": "Sample Todo", "completed": false}];
 
 app.get('/todos', (req, res) => {
     res.json(todos);
@@ -18,7 +18,7 @@ app.post('/todos', (req, res) => {
     const { title } = req.body;
 
     if (typeof title !== 'string' || !title.trim()) {
-        return res.status(400).json({ message: 'Invalid todo format. "title" must be a non-empty string.' });
+        return res.status(400).json({ message: 'Invalid todo format. Title is required.' });
     }
 
     const todo = {
@@ -42,7 +42,7 @@ app.put('/todos/:id', (req, res) => {
     const { title, completed } = req.body;
 
     if (typeof title !== 'string' || !title.trim()) {
-        return res.status(400).json({ message: 'Invalid todo format. "title" must be a non-empty string.' });
+        return res.status(400).json({ message: 'Invalid todo format. Title is required.' });
     }
 
     if (typeof completed !== 'boolean') {
@@ -79,9 +79,21 @@ const userCredentials = {
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
-    if (username === userCredentials.username && password === userCredentials.password) {
-        return res.json({ success: true, message: 'Login successful' });
-    } else {
-        return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    if (!username) {
+        return res.status(400).json({ success: false, message: 'Username is required' });
     }
+
+     if (!password) {
+        return res.status(400).json({ success: false, message: 'Password is required' });
+    }
+
+    if (username !== userCredentials.username) {
+        return res.status(401).json({ success: false, message: 'Invalid username' });
+    }
+
+    if (password !== userCredentials.password) {
+        return res.status(401).json({ success: false, message: 'Invalid password' });
+    }
+
+    return res.json({ success: true, message: 'Login successful' });
 });
