@@ -15,22 +15,23 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Backend Dependencies (including Cypress & Newman)
+      - name: Install Backend Dependencies (with Cypress & Newman)
         run: npm install
 
       - name: Install Frontend Dependencies
         working-directory: ./todofrontend
         run: npm install
 
-      - name: Start Backend and Frontend and Run Cypress Tests
+      - name: Install Concurrently
+        run: npm install concurrently --save-dev
+
+      - name: Start Backend & Frontend and Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          start: |
-            npm start &                       # Starts Node server on port 5000
-            cd todofrontend && npm run dev &  # Starts React app on port 5137
+          start: npm run start:dev
           wait-on: 'http://localhost:5137,http://localhost:5000'
           wait-on-timeout: 60
           spec: 'cypress/e2e/all.cy.js'
 
       - name: Run Newman API Tests
-        run: npx newman run ./collection.json
+        run: npx newman run ./todo-api-full-test.postman_collection.json

@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "cypress open",
-    "start": "node server.js"
+    "start": "node server.js",
+  "start:dev": "concurrently \"npm start\" \"cd todofrontend && npm run dev\""
   },
   "author": "Victor Awam",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "concurrently": "^9.2.0",
     "cypress": "^14.5.2"
   }
 }
