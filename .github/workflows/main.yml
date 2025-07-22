@@ -34,4 +34,4 @@ jobs:
           spec: 'cypress/e2e/all.cy.js'
 
       - name: Run Newman API Tests
-        run: npx newman run ./todo-api-full-test.postman_collection.json
+        run: npx newman run ./collection.json
