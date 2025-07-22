@@ -1,0 +1,39 @@
+name: API and UI Tests
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Backend Dependencies
+        run: npm install
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Start Backend and Frontend and Run Tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: |
+            npm start &
+            cd frontend && npm run dev &
+          wait-on: 'http://localhost:5137,http://localhost:5000'
+          wait-on-timeout: 60
+          spec: 'frontend/cypress/e2e/all.cy.js'
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Newman API Tests
+        run: newman run ./collection.json
