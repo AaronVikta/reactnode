@@ -4,7 +4,7 @@
   "description": "A simple todo app to demonstrate my QA Automation skills",
   "main": "server.js",
   "scripts": {
-    "test": "cypress open",
+    "test": "cypress run",
     "start": "node server.js",
   "start:dev": "concurrently \"npm start\" \"cd todofrontend && npm run dev\""
   },
