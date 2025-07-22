@@ -1,0 +1,21 @@
+Login:
+1. Verify that the username and password fields are required
+2. Verify that only users that exist on the backend can Login
+3. Verify that accurate error messages are displayed to the username
+
+Get Todo
+1: Verify that users are able to see the todos that exist on the data
+
+Create Todo
+1. As a user when I create a todo, it should be displayed on the page
+2. verify that users get a descriptive error message when they submit the create todo
+form without supplying a title
+
+Update Todo
+1. Verify that users get a descriptive error message when they leave the update todo field blank
+2. As a user, when I submit the update todo form, I expect to see the changes I made on 
+the page
+
+Delete Todo
+1. As a user when I delete a todo, the todo should be deleted from the screen
+2. Verify that only the selected todo is updated
